@@ -684,15 +684,15 @@ Live 代码块定义了一个由原始值、数组、对象或表达式组成的
 
 为了帮助描述转译过程，我们将引入一些符号。以把 Live 句法形式 `2 + 3` 转移成扁平化节点列表 `binop(+) 2 3` 为例。这个转译过程可看作是关于函数 *T*，以句法形式作为输入并且返回节点列表作为输出。可以把该转译过程写成一个等式：
 
-$$
+```math
 T[[2 + 3]] = binop(+) 2 3
-$$
+```
 
 如果句法形式包含任何非终止符（non-terminals）,则需要对这些非终止符递归应用 *T*。例如，二元运算符表达式的一般转译方案是：
 
-$$
-T[[expression binary_operator expression]] = binop(op) T[[expression]] T[[expression]]
-$$
+```math
+T[[expression\ binary\_operator\ expression]] = binop(op)\ T[[expression]]\ T[[expression]]
+```
 
 其中，*op* 是操作数。
 
@@ -700,17 +700,17 @@ $$
 
 例如，在下面的转译方案中：
 
-$$
+```math
 T[[expression^?]] = T[[expression]]^?
-$$
+```
 
 转译后右边的表达式 $T[[expression]]$ 只有在左边出现的时候才会出现。
 
 类似的，以下转译方案也是如此：
 
-$$
+```math
 T[[expression^*]] = T[[expression]]^*
-$$
+```
 
 转译后表达式 $T[[expression]]$ 在右边出现的次数应该和左边的一样多。
 
@@ -722,17 +722,17 @@ $$
 
 使用声明的一般转译方案是：
 
-$$
-T[[use\ initial\_path\_segment(:: additional\_path\_segment)\ final\_path\_segment]] = use(path)
-$$
+```math
+T[[use\ initial\_path\_segment(::\ additional\_path\_segment)\ final\_path\_segment]] = use(path)
+```
 
 ### 8.1.2 顶层属性定义
 
 顶层属性定义的一般转译方案是：
 
-$$
+```math
 T[[identifier^?\ identifier\ :\ object\_expression]] = identifier^?\ identifier = T[[object\_expression]]
-$$
+```
 
 ## 8.2 表达式
 
@@ -742,17 +742,41 @@ $$
 
 字面量的转译方案非常简单。只需将字面量翻译成具有字面量值的节点即可。共有：
 
-$$
-T[[boolean\_literal]] = bool(x)\\
-T[[integer\_literal]] = int(x)\\
-T[[floating\_point\_literal]] = float(x)\\
-T[[vec2\_literal]] = vec2(x)\\
-T[[vec3\_literal]] = vec3(x)\\
-T[[vec4\_literal]] = vec4(x)\\
-T[[color\_literal]] = color(x)\\
-T[[string\_literal]] = string(x)\\
+```math
+T[[boolean\_literal]] = bool(x)
+```
+
+```math
+T[[integer\_literal]] = int(x)
+```
+
+```math
+T[[floating\_point\_literal]] = float(x)
+```
+
+```math
+T[[vec2\_literal]] = vec2(x)
+```
+
+```math
+T[[vec3\_literal]] = vec3(x)
+```
+
+```math
+T[[vec4\_literal]] = vec4(x)
+```
+
+```math
+T[[color\_literal]] = color(x)
+```
+
+```math
+T[[string\_literal]] = string(x)
+```
+
+```math
 T[[raw\_string\_literal]] = string(x)
-$$
+```
 
 其中 *x* 是字面量的值。
 
@@ -770,9 +794,9 @@ $$
 
 因此，数组表达式的一般转译方案是：
 
-$$
+```math
 T[[\ [primary\_expression(,\ primary\_expression)^*,^?]\ ]] = array\ T[[primary\_expression]]\ T[[primary\_expression]]^*\ close
-$$
+```
 
 #### 8.2.1.3 对象表达式
 
@@ -788,29 +812,41 @@ $$
 
 因此，对象表达式的一般转译方案是：
 
-$$
-T[[\{\ (property\_definition(,\ property\_definition)^*)^?\ \}]] = object\ (T[[property\_definition]]\ T[[property\_definition]]^*)^?\ close\\
-T[[identifier\ \{\ (property\_definition(,\ property\_definition)^*)^?\ \}]] = clone(id)\ (T[[property\_definition]]\ T[[property\_definition]]^*)^?\ close\\
+```math
+T[[\{\ (property\_definition(,\ property\_definition)^*)^?\ \}]] = object\ (T[[property\_definition]]\ T[[property\_definition]]^*)^?\ close
+```
+
+```math
+T[[identifier\ \{\ (property\_definition(,\ property\_definition)^*)^?\ \}]] = clone(id)\ (T[[property\_definition]]\ T[[property\_definition]]^*)^?\ close
+```
+
+```math
 T[[\{\ \{\ identifier\ \}\ \}\ \{\ (property\_definition(,\ property\_definition)^*)^?\ \}]] = class(id)\ (T[[property\_definition]]\ T[[property\_definition]]^*)^?\ close
-$$
+```
 
 其中 *id* 是标识符的名称。
 
 属性定义被转译为属性节点。共有：
 
-$$
-T[[identifier^?\ identifier\ :\ object\_expression]] = identifier^?\ identifier\ :\ T[[object\_expression]]\\
-T[[identifier^?\ identifier = object\_expression]] = identifier^?\ identifier = T[[object\_expression]]\\
-T[[identifier^?\ identifier =?\ object\_expression]] =?\ identifier^?\ identifier =?\ T[[object\_expression]]\\
-$$
+```math
+T[[identifier^?\ identifier\ :\ object\_expression]] = identifier^?\ identifier\ :\ T[[object\_expression]]
+```
+
+```math
+T[[identifier^?\ identifier = object\_expression]] = identifier^?\ identifier = T[[object\_expression]]
+```
+
+```math
+T[[identifier^?\ identifier =?\ object\_expression]] =?\ identifier^?\ identifier =?\ T[[object\_expression]]
+```
 
 #### 8.2.1.4 函数表达式
 
 函数表达式的转译方案非常简单，只需将组成表达式的令牌列表转换为指向该列表指针的节点：
 
-$$
+```math
 T[[fn\ (token\_list)\ (->\ identifier)^?\ \{\ token\_list\ \}]] = fn(tokens)
-$$
+```
 
 其中 *tokens* 是指向组成表达式的令牌列表的指针。
 
@@ -818,17 +854,17 @@ $$
 
 标识符表达式的翻译方案非常简单，只需要将标识符翻译成带有标识符名称的节点即可：
 
-$$
+```math
 T[[identifier]] = idnet(id)
-$$
+```
 
 #### 8.2.1.6 分组表达式
 
 分组表达式的一般转译方案是：
 
-$$
+```math
 T[[(expression)]] = T[[expression]]
-$$
+```
 
 ### 8.2.2 复合表达式
 
@@ -844,9 +880,9 @@ $$
 
 调用表达式的一般转译方案是：
 
-$$
+```math
 T[[identifier\ ((expression(,\ expression)^*)^?)]] = call(identifier,\ n)\ (T[[expression]](,\ T[[expression]])^*)^?
-$$
+```
 
 其中 *n* 是调用的参数个数。
 
@@ -862,9 +898,9 @@ $$
 
 一元运算符表达式的一般转译方案是：
 
-$$
+```math
 T[[unary\_operator\ expression]] = unop(op)\ T[[expression]]
-$$
+```
 
 其中 *op* 是运算符。
 
@@ -878,9 +914,9 @@ $$
 
 二元运算符的一般转译方案是：
 
-$$
+```math
 T[[expression\ binary\_operator\ expression]] = binop(op)\ T[[expression]]\ T[[expression]]
-$$
+```
 
 其中 *op* 是运算符。
 
