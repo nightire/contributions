@@ -955,7 +955,7 @@ x: float(2.0)
 close
 B: object
 x: float(2.0)
-y: flaot(3.0)
+y: float(3.0)
 close
 ```
 
